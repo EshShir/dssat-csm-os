@@ -193,7 +193,7 @@ C      REAL            PRLF
       INTEGER         YREMRG   
       INTEGER         YRPLT 
       INTEGER         YRSIM    
-	REAL            Z2STAGE
+	 REAL            Z2STAGE
 
 !     Added by W.D.B. for pest damage at CIMMYT 4/14/2001
 
@@ -214,6 +214,9 @@ C      REAL            PRLF
 
 !     Added for K model   
       REAL KUptake(NL), SKi_AVAIL(NL), KSTRES
+
+!     added for using PAR from weather file
+      REAL        PAR 
 
 !     ------------------------------------------------------------------
 !     Define constructed variable types based on definitions in
@@ -262,6 +265,7 @@ C      REAL            PRLF
       TMAX   = WEATHER % TMAX
       TMIN   = WEATHER % TMIN
       TWILEN = WEATHER % TWILEN
+      PAR    = WEATHER % PAR   
 
       DATA MZSTGNAM /
      &  'End Juveni',   !1
@@ -329,7 +333,7 @@ C----------------------------------------------------------------------
      &    CUMDTT,DTT,GPP,ISDATE, ISTAGE,MDATE,STGDOY,SUMDTT,      !O
      &    XNTI,TLNO,XSTAGE,YREMRG,RUE,KCAN,KEP, P3, TSEN, CDAY,   !O
      &    PEAR,PSTM,GDDAE,SeedFrac,VegFrac,Z2STAGE,CropStatus)    !O
-	    ENDIF
+	     ENDIF
 
           !-------------------------------------------------------------
           !Call growth routine
@@ -343,7 +347,7 @@ C----------------------------------------------------------------------
      &      SHF, SLPF, SPi_AVAIL, SRAD, STGDOY, SUMDTT, SW,   !Input
      &      SWIDOT, TLNO, TMAX, TMIN, TRWUP, TSEN, VegFrac,   !Input
      &      WLIDOT, WRIDOT, WSIDOT, XNTI, XSTAGE,             !Input
-     &      YRDOY, YRPLT, SKi_Avail,                          !Input
+     &      YRDOY, YRPLT, SKi_Avail, PAR,                     !Input
      &      EARS, GPP, MDATE,HARVFRAC,                        !I/O
      &      AGEFAC, APTNUP, AREALF, CANHT, CANNAA, CANWAA,    !Output
      &      CANWH, CARBO, GNUP, GPSM, GRNWT, GRORT, HI, HIP,  !Output
@@ -365,7 +369,7 @@ C----------------------------------------------------------------------
      &      SeedFrac,SHF,SLPF,SPi_AVAIL,SRAD,STGDOY,SUMDTT,SW,  !Input
      &      SWIDOT, TLNO, TMAX, TMIN, TRWUP, TSEN, VegFrac,     !Input
      &      WEATHER,WLIDOT, WRIDOT, WSIDOT, XNTI, XSTAGE,       !Input
-     &      YRDOY, YRPLT, Z2STAGE,                              !Input
+     &      YRDOY, YRPLT, Z2STAGE, PAR,                         !Input
      &      EARS, GPP, MDATE,                                   !I/O
      &      AGEFAC, APTNUP, AREALF, CANHT, CANNAA, CANWAA,      !Output
      &      CANWH, CARBO, GNUP, GPSM, GRNWT, GRORT, HI, HIP,    !Output
@@ -386,7 +390,7 @@ C----------------------------------------------------------------------
      &      SHF, SLPF, SPi_AVAIL, SRAD, STGDOY, SUMDTT, SW,   !Input
      &      SWIDOT, TLNO, TMAX, TMIN, TRWUP, TSEN, VegFrac,   !Input
      &      WLIDOT, WRIDOT, WSIDOT, XNTI, XSTAGE,             !Input
-     &      YRDOY, YRPLT,                                     !Input
+     &      YRDOY, YRPLT, PAR,                                !Input
      &      EARS, GPP, MDATE,                                 !I/O
      &      AGEFAC, APTNUP, AREALF, CANHT, CANNAA, CANWAA,    !Output
      &      CANWH, CARBO, GNUP, GPSM, GRNWT, GRORT, HI, HIP,  !Output
@@ -478,14 +482,14 @@ C-----------------------------------------------------------------------
      &      CUMDTT,DTT,EARS,GPP,ISDATE, ISTAGE,MDATE,STGDOY,SUMDTT, !O
      &      XNTI,TLNO,XSTAGE,YREMRG,RUE,KCAN,KEP, P3, TSEN, CDAY,   !O
      &      SeedFrac, VegFrac, CropStatus)                          !O
-	    ELSEIF(MODEL(1:5).EQ.'MZIXM')THEN
+	     ELSEIF(MODEL(1:5).EQ.'MZIXM')THEN
             CALL MZ_IX_PHENOL(DYNAMIC,ISWWAT,FILEIO,IDETO,        !C
      &    CUMDEP,DAYL,DLAYR,LEAFNO,LL,NLAYR,PLTPOP,SDEPTH,        !I
      &    SNOW, SRAD,SW,TMAX,TMIN, TWILEN,XN,YRDOY,YRSIM,         !I
      &    CUMDTT,DTT,GPP,ISDATE, ISTAGE,MDATE,STGDOY,SUMDTT,      !O
      &    XNTI,TLNO,XSTAGE,YREMRG,RUE,KCAN,KEP, P3, TSEN, CDAY,   !O
      &    PEAR,PSTM,GDDAE,SeedFrac,VegFrac,Z2STAGE,CropStatus)    !O
-	    ENDIF
+	     ENDIF
 
           SELECT CASE(MODEL(1:5))
           CASE ('MZCER')  !CERES-Maize
@@ -496,7 +500,7 @@ C-----------------------------------------------------------------------
      &      SHF, SLPF, SPi_AVAIL, SRAD, STGDOY, SUMDTT, SW,   !Input
      &      SWIDOT, TLNO, TMAX, TMIN, TRWUP, TSEN, VegFrac,   !Input
      &      WLIDOT, WRIDOT, WSIDOT, XNTI, XSTAGE,             !Input
-     &      YRDOY, YRPLT, SKi_Avail,                          !Input
+     &      YRDOY, YRPLT, SKi_Avail, PAR,                     !Input
      &      EARS, GPP, MDATE,HARVFRAC,                        !I/O
      &      AGEFAC, APTNUP, AREALF, CANHT, CANNAA, CANWAA,    !Output
      &      CANWH, CARBO, GNUP, GPSM, GRNWT, GRORT, HI, HIP,  !Output
@@ -518,7 +522,7 @@ C-----------------------------------------------------------------------
      &      SeedFrac,SHF,SLPF,SPi_AVAIL,SRAD,STGDOY,SUMDTT,SW,  !Input
      &      SWIDOT, TLNO, TMAX, TMIN, TRWUP, TSEN, VegFrac,     !Input
      &      WEATHER,WLIDOT, WRIDOT, WSIDOT, XNTI, XSTAGE,       !Input
-     &      YRDOY, YRPLT, Z2STAGE,                              !Input
+     &      YRDOY, YRPLT, Z2STAGE, PAR,                         !Input
      &      EARS, GPP, MDATE,                                   !I/O
      &      AGEFAC, APTNUP, AREALF, CANHT, CANNAA, CANWAA,      !Output
      &      CANWH, CARBO, GNUP, GPSM, GRNWT, GRORT, HI, HIP,    !Output
@@ -539,7 +543,7 @@ C-----------------------------------------------------------------------
      &      SHF, SLPF, SPi_AVAIL, SRAD, STGDOY, SUMDTT, SW,   !Input
      &      SWIDOT, TLNO, TMAX, TMIN, TRWUP, TSEN, VegFrac,   !Input
      &      WLIDOT, WRIDOT, WSIDOT, XNTI, XSTAGE,             !Input
-     &      YRDOY, YRPLT,                                     !Input
+     &      YRDOY, YRPLT, PAR,                                !Input
      &      EARS, GPP, MDATE,                                 !I/O
      &      AGEFAC, APTNUP, AREALF, CANHT, CANNAA, CANWAA,    !Output
      &      CANWH, CARBO, GNUP, GPSM, GRNWT, GRORT, HI, HIP,  !Output
@@ -637,14 +641,14 @@ C----------------------------------------------------------------------
      &        CUMDTT,DTT,EARS,GPP,ISDATE, ISTAGE,MDATE,STGDOY,SUMDTT, !O
      &        XNTI,TLNO,XSTAGE,YREMRG,RUE,KCAN,KEP, P3, TSEN, CDAY,   !O
      &        SeedFrac, VegFrac, CropStatus)                          !O
-	      ELSEIF(MODEL(1:5).EQ.'MZIXM')THEN
+	       ELSEIF(MODEL(1:5).EQ.'MZIXM')THEN
               CALL MZ_IX_PHENOL(DYNAMIC,ISWWAT,FILEIO,IDETO,      !C
      &    CUMDEP,DAYL,DLAYR,LEAFNO,LL,NLAYR,PLTPOP,SDEPTH,        !I
      &    SNOW, SRAD,SW,TMAX,TMIN, TWILEN,XN,YRDOY,YRSIM,         !I
      &    CUMDTT,DTT,GPP,ISDATE, ISTAGE,MDATE,STGDOY,SUMDTT,      !O
      &    XNTI,TLNO,XSTAGE,YREMRG,RUE,KCAN,KEP, P3, TSEN, CDAY,   !O
      &    PEAR,PSTM,GDDAE,SeedFrac,VegFrac,Z2STAGE,CropStatus)    !O
-	      ENDIF
+	       ENDIF
           ENDIF
         ENDIF
           !------------------------------------------------------------
@@ -660,7 +664,7 @@ C----------------------------------------------------------------------
      &      SHF, SLPF, SPi_AVAIL, SRAD, STGDOY, SUMDTT, SW,   !Input
      &      SWIDOT, TLNO, TMAX, TMIN, TRWUP, TSEN, VegFrac,   !Input
      &      WLIDOT, WRIDOT, WSIDOT, XNTI, XSTAGE,             !Input
-     &      YRDOY, YRPLT, SKi_Avail,                          !Input
+     &      YRDOY, YRPLT, SKi_Avail, PAR,                     !Input
      &      EARS, GPP, MDATE,HARVFRAC,                        !I/O
      &      AGEFAC, APTNUP, AREALF, CANHT, CANNAA, CANWAA,    !Output
      &      CANWH, CARBO, GNUP, GPSM, GRNWT, GRORT, HI, HIP,  !Output
@@ -683,7 +687,7 @@ C----------------------------------------------------------------------
      &      SeedFrac,SHF,SLPF,SPi_AVAIL,SRAD,STGDOY,SUMDTT,SW,  !Input
      &      SWIDOT, TLNO, TMAX, TMIN, TRWUP, TSEN, VegFrac,     !Input
      &      WEATHER,WLIDOT, WRIDOT, WSIDOT, XNTI, XSTAGE,       !Input
-     &      YRDOY, YRPLT, Z2STAGE,                              !Input
+     &      YRDOY, YRPLT, Z2STAGE, PAR,                         !Input
      &      EARS, GPP, MDATE,                                   !I/O
      &      AGEFAC, APTNUP, AREALF, CANHT, CANNAA, CANWAA,      !Output
      &      CANWH, CARBO, GNUP, GPSM, GRNWT, GRORT, HI, HIP,    !Output
@@ -705,7 +709,7 @@ C----------------------------------------------------------------------
      &      SHF, SLPF, SPi_AVAIL, SRAD, STGDOY, SUMDTT, SW,   !Input
      &      SWIDOT, TLNO, TMAX, TMIN, TRWUP, TSEN, VegFrac,   !Input
      &      WLIDOT, WRIDOT, WSIDOT, XNTI, XSTAGE,             !Input
-     &      YRDOY, YRPLT,                                     !Input
+     &      YRDOY, YRPLT, PAR,                                !Input
      &      EARS, GPP, MDATE,                                 !I/O
      &      AGEFAC, APTNUP, AREALF, CANHT, CANNAA, CANWAA,    !Output
      &      CANWH, CARBO, GNUP, GPSM, GRNWT, GRORT, HI, HIP,  !Output
@@ -761,7 +765,7 @@ C----------------------------------------------------------------------
      &      SHF, SLPF, SPi_AVAIL, SRAD, STGDOY, SUMDTT, SW,   !Input
      &      SWIDOT, TLNO, TMAX, TMIN, TRWUP, TSEN, VegFrac,   !Input
      &      WLIDOT, WRIDOT, WSIDOT, XNTI, XSTAGE,             !Input
-     &      YRDOY, YRPLT, SKi_Avail,                          !Input
+     &      YRDOY, YRPLT, SKi_Avail, PAR,                     !Input
      &      EARS, GPP, MDATE,HARVFRAC,                        !I/O
      &      AGEFAC, APTNUP, AREALF, CANHT, CANNAA, CANWAA,    !Output
      &      CANWH, CARBO, GNUP, GPSM, GRNWT, GRORT, HI, HIP,  !Output
@@ -783,7 +787,7 @@ C----------------------------------------------------------------------
      &      SeedFrac,SHF,SLPF,SPi_AVAIL,SRAD,STGDOY,SUMDTT,SW,  !Input
      &      SWIDOT, TLNO, TMAX, TMIN, TRWUP, TSEN, VegFrac,     !Input
      &      WEATHER,WLIDOT, WRIDOT, WSIDOT, XNTI, XSTAGE,       !Input
-     &      YRDOY, YRPLT, Z2STAGE,                              !Input
+     &      YRDOY, YRPLT, Z2STAGE, PAR,                         !Input
      &      EARS, GPP, MDATE,                                   !I/O
      &      AGEFAC, APTNUP, AREALF, CANHT, CANNAA, CANWAA,      !Output
      &      CANWH, CARBO, GNUP, GPSM, GRNWT, GRORT, HI, HIP,    !Output
@@ -804,7 +808,7 @@ C----------------------------------------------------------------------
      &      SHF, SLPF, SPi_AVAIL, SRAD, STGDOY, SUMDTT, SW,   !Input
      &      SWIDOT, TLNO, TMAX, TMIN, TRWUP, TSEN, VegFrac,   !Input
      &      WLIDOT, WRIDOT, WSIDOT, XNTI, XSTAGE,             !Input
-     &      YRDOY, YRPLT,                                     !Input
+     &      YRDOY, YRPLT, PAR,                                !Input
      &      EARS, GPP, MDATE,                                 !I/O
      &      AGEFAC, APTNUP, AREALF, CANHT, CANNAA, CANWAA,    !Output
      &      CANWH, CARBO, GNUP, GPSM, GRNWT, GRORT, HI, HIP,  !Output
@@ -869,7 +873,7 @@ C----------------------------------------------------------------------
      &      SHF, SLPF, SPi_AVAIL, SRAD, STGDOY, SUMDTT, SW,   !Input
      &      SWIDOT, TLNO, TMAX, TMIN, TRWUP, TSEN, VegFrac,   !Input
      &      WLIDOT, WRIDOT, WSIDOT, XNTI, XSTAGE,             !Input
-     &      YRDOY, YRPLT, SKi_Avail,                          !Input
+     &      YRDOY, YRPLT, SKi_Avail, PAR,                     !Input
      &      EARS, GPP, MDATE,HARVFRAC,                        !I/O
      &      AGEFAC, APTNUP, AREALF, CANHT, CANNAA, CANWAA,    !Output
      &      CANWH, CARBO, GNUP, GPSM, GRNWT, GRORT, HI, HIP,  !Output
@@ -891,7 +895,7 @@ C----------------------------------------------------------------------
      &      SeedFrac,SHF,SLPF,SPi_AVAIL,SRAD,STGDOY,SUMDTT,SW,  !Input
      &      SWIDOT, TLNO, TMAX, TMIN, TRWUP, TSEN, VegFrac,     !Input
      &      WEATHER,WLIDOT, WRIDOT, WSIDOT, XNTI, XSTAGE,       !Input
-     &      YRDOY, YRPLT, Z2STAGE,                              !Input
+     &      YRDOY, YRPLT, Z2STAGE, PAR,                         !Input
      &      EARS, GPP, MDATE,                                   !I/O
      &      AGEFAC, APTNUP, AREALF, CANHT, CANNAA, CANWAA,      !Output
      &      CANWH, CARBO, GNUP, GPSM, GRNWT, GRORT, HI, HIP,    !Output
@@ -912,7 +916,7 @@ C----------------------------------------------------------------------
      &      SHF, SLPF, SPi_AVAIL, SRAD, STGDOY, SUMDTT, SW,   !Input
      &      SWIDOT, TLNO, TMAX, TMIN, TRWUP, TSEN, VegFrac,   !Input
      &      WLIDOT, WRIDOT, WSIDOT, XNTI, XSTAGE,             !Input
-     &      YRDOY, YRPLT,                                     !Input
+     &      YRDOY, YRPLT, PAR,                                !Input
      &      EARS, GPP, MDATE,                                 !I/O
      &      AGEFAC, APTNUP, AREALF, CANHT, CANNAA, CANWAA,    !Output
      &      CANWH, CARBO, GNUP, GPSM, GRNWT, GRORT, HI, HIP,  !Output

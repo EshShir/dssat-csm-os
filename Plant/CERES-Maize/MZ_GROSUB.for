@@ -46,7 +46,7 @@
      &      SHF, SLPF, SPi_AVAIL, SRAD, STGDOY, SUMDTT, SW,   !Input
      &      SWIDOT, TLNO, TMAX, TMIN, TRWUP, TSEN, VegFrac,   !Input
      &      WLIDOT, WRIDOT, WSIDOT, XNTI, XSTAGE,             !Input
-     &      YRDOY, YRPLT, SKi_Avail,                          !Input
+     &      YRDOY, YRPLT, SKi_Avail, PAR,                     !Input
      &      EARS, GPP, MDATE,HARVFRAC,                        !I/O
      &      AGEFAC, APTNUP, AREALF, CANHT, CANNAA, CANWAA,    !Output
      &      CANWH, CARBO, GNUP, GPSM, GRNWT, GRORT, HI, HIP,  !Output
@@ -1113,7 +1113,7 @@ C-GH 60     FORMAT(25X,F5.2,13X,F5.2,7X,F5.2)
           !                Daily Photosynthesis Rate
           ! ------------------------------------------------------------
           !Compare with weather module: PAR = SRAD * 2.0  chp
-          PAR = SRAD*PARSR    !PAR local variable
+          !PAR = SRAD*PARSR    !PAR local variable    no need to calculate because PAR is given as input 
 
           LIFAC  = 1.5 - 0.768 * ((ROWSPC * 0.01)**2 * PLTPOP)**0.1 
           PCO2  = TABEX (CO2Y,CO2X,CO2,10)
