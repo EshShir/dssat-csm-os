@@ -7,7 +7,7 @@
      &     DLAYR, DOY, DUL, EO, EOP, ISWNIT, ISWWAT,
      &     KCAN, KEP, LL, NFP, NH4LEFT, NLAYR , NO3LEFT,
      &     RLV, RNMODE, SAT , SENCALG, SENNALG,
-     &     SHF, SLPF, SNOW, SRAD, ST, STGDOY, SW,
+     &     SHF, SLPF, SNOW, SRAD, ST, STGDOY, SW, PAR, NOPAR,
      &     TMAX, TMIN, TRWUP, UH2O, UNH4ALG, UNO3ALG, WEATHER,
      &     SOILPROP, CONTROL, WINDSP, YEAR,
      &     YEARPLTCSM, LAI, IDETG)
@@ -28,9 +28,10 @@
         REAL DUL(20), EO, EOP, KCAN, KEP, LL(20), NFP, NH4LEFT(20)
         REAL NO3LEFT(20), RLV(20), SAT(20)
         REAL SENCALG(0:20), SENNALG(0:20), SHF(20), SLPF
-        REAL SRAD, ST(0:20), SW(20), TMAX, TMIN, TRWUP
+        REAL SRAD, ST(0:20), SW(20), TMAX, TMIN, TRWUP, PAR
         REAL UH2O(20), WINDSP, LAI
         REAL DAYLT, RWUMX, RWUPM, SNOW, TFAC4, YVALXY
+        LOGICAL NOPAR
         
         CHARACTER*1 IDETG, ISWNIT, ISWWAT, RNMODE
         
@@ -181,7 +182,12 @@ C  FO - 05/07/2020 Add new Y4K subroutine call to convert YRDOY
         IF (YEARDOY.GE.YEARPLT) THEN   
 
           ! Photosynthetically active radiation
-          PARAD = PARADFAC*SRAD
+          ! set PAR(PARAD) value.
+          IF (NOPAR)  THEN
+              PARAD = PARADFAC*SRAD    !calculated here if there's no value from the weather file 
+          ELSE
+              PARAD = PAR / 4.57    !PAR unit convertion from moles/m2/day (coming from weather file) to MJ/m2/day
+          ENDIF
 
           ! Mean temperature
           TMEAN = (TMAX+TMIN)/2.0

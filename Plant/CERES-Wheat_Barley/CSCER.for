@@ -27,7 +27,7 @@
 !     SUBROUTINE CSCER (FILEIOIN, RUN, TN, RN,             !Command line
 !    & ISWWAT, ISWNIT, IDETO, IDETG, IDETL, FROP,          !Controls
 !    & SN, ON, RUNI, REP, YEAR, DOY, STEP, CN,             !Run+loop
-!    & SRAD, TMAX, TMIN, CO2, RAIN, DEWDUR,                !Weather
+!    & SRAD, TMAX, TMIN, CO2, RAIN, DEWDUR, PAR, NOPAR,    !Weather
 !    & DAYLT, WINDSP, ST, EO,                              !Weather
 !    & NLAYR, DLAYR, DEPMAX, LL, DUL, SAT, BD, SHF, SLPF,  !Soil states
 !    & SNOW, SW, NO3LEFT, NH4LEFT,                         !H2o,N states
@@ -45,7 +45,7 @@
       SUBROUTINE CSCER (FILEIOIN, RUN, TN, RN, RNMODE,     !Command line
      & ISWWAT, ISWNIT, IDETS, IDETO, IDETG, IDETL, FROP,   !Controls
      & SN, ON, RUNI, REP, YEAR, DOY, STEP, CN,             !Run+loop
-     & SRAD, TMAX, TMIN, CO2, RAIN, TOTIR,                 !Weather
+     & SRAD, TMAX, TMIN, CO2, RAIN, TOTIR, PAR, NOPAR,     !Weather
      & DAYLT, WINDSP, ST, EO,                              !Weather
      & NLAYR, DLAYR, DEPMAX, LL, DUL, SAT, BD, SHF, SLPF,  !Soil states
      & SNOW, SW, NO3LEFT, NH4LEFT,                         !H2o,N states
@@ -197,8 +197,9 @@
       REAL RAIN, RWUPM, RWUMX, SLPF, SHF(NL)
       REAL ST(0:NL), SENNALG(0:NL), SENCALG(0:NL), TRWUP, UH2O(NL)
       REAL SW(20), NO3LEFT(20), NH4LEFT(NL)
-      REAL CO2, TMAX, TMIN, SRAD, WINDSP, SNOW
+      REAL CO2, TMAX, TMIN, SRAD, WINDSP, SNOW, PAR
       REAL TFAC4, TOTIR, YVALXY, YVAL1
+      LOGICAL NOPAR
 
       CHARACTER*1   IDETG, ISWNIT, ISWWAT, IDETL, IDETO, IDETS
       CHARACTER*1   RNMODE
@@ -225,7 +226,7 @@
      &     DLAYR, DOY, DUL, EO, EOP, ISWNIT, ISWWAT,
      &     KCAN, KEP, LL, NFP, NH4LEFT, NLAYR , NO3LEFT,
      &     RLV, RNMODE, SAT , SENCALG, SENNALG,
-     &     SHF, SLPF, SNOW, SRAD, ST, STGDOY, SW,
+     &     SHF, SLPF, SNOW, SRAD, ST, STGDOY, SW, PAR, NOPAR,
      &     TMAX, TMIN, TRWUP, UH2O, UNH4ALG, UNO3ALG, WEATHER,
      &     SOILPROP, CONTROL, WINDSP, YEAR,
      &     YEARPLTCSM, LAI, IDETG)

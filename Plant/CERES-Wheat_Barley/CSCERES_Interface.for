@@ -32,11 +32,12 @@ C=======================================================================
       INTEGER MULTI, FROP, SN, YEAR, DOY
       INTEGER STGDOY(20), YRPLT
 
-      REAL WUPT, EOP, EP, ET, TRWUP, SRAD, TMAX, TMIN, CO2
+      REAL WUPT, EOP, EP, ET, TRWUP, SRAD, TMAX, TMIN, CO2, PAR
       REAL SNOW, KCAN, KEP, DEPMAX
       REAL NSTRES, XLAI, LAI, NFP, SLPF
       REAL DAYL, TWILEN, PORMIN, RAIN, RWUMX, SRFTEMP
       REAL CANHT, EO, TOTIR, WINDSP
+      LOGICAL NOPAR
 
       REAL, DIMENSION(NL) :: BD, DLAYR, DS, DUL, LL
       REAL, DIMENSION(NL) :: NH4, NO3, RLV, SAT, SHF
@@ -118,16 +119,18 @@ C=======================================================================
       DAYL  = WEATHER % DAYL 
       RAIN  = WEATHER % RAIN
       SRAD  = WEATHER % SRAD
+      PAR   = WEATHER % PAR
       TMAX  = WEATHER % TMAX
       TMIN  = WEATHER % TMIN
       TWILEN= WEATHER % TWILEN
       WINDSP= WEATHER % WINDSP
+      NOPAR = WEATHER % NOPAR
 
 C-----------------------------------------------------------------------
       CALL CSCER (FILEIOCS, RUN, TN, RN, RNMODE,           !Command line
      & ISWWAT, ISWNIT, IDETS, IDETO, IDETG, IDETL, FROP,   !Controls
      & SN, ON, RUNI, REP, YEAR, DOY, STEP, CN,             !Run+loop
-     & SRAD, TMAX, TMIN, CO2, RAIN, TOTIR,                 !Weather
+     & SRAD, TMAX, TMIN, CO2, RAIN, TOTIR, PAR, NOPAR,     !Weather
      & TWILEN, WINDSP, SOILTEMP, EO,                       !Weather
      & NLAYR, DLAYR, DEPMAX, LL, DUL, SAT, BD, SHF, SLPF,  !Soil states
      & SNOW, SW, NO3, NH4,                                 !H2o,N states

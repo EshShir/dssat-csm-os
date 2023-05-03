@@ -71,7 +71,7 @@ C=======================================================================
      &  TA, TAMP, TAV, TAVG, TDAY, TDEW, TGROAV, TGRODY,
      &  TMAX, TMIN, TWILEN, VAPR, WINDHT, WINDRUN, WINDSP,
      &  XELEV, XLAT, XLONG
-      LOGICAL NOTDEW, NOWIND
+      LOGICAL NOTDEW, NOWIND, NOPAR
       REAL CALC_TDEW
 
       REAL, DIMENSION(TS) :: AMTRH, AZZON, BETA, FRDIFP, FRDIFR, PARHR
@@ -223,7 +223,7 @@ C         message to the WARNING.OUT file.
      &   ('Value of TAV, average annual soil temperature, is missing.')
   110 FORMAT('Value of TAMP, amplitude of soil temperature function,',
      &            ' is missing.')
-  120 FORMAT('A default value of', F5.1, 'ºC is being used for this',
+  120 FORMAT('A default value of', F5.1, 'ï¿½C is being used for this',
      &            ' simulation,')
   130 FORMAT('which may produce undesirable results.')
 
@@ -287,6 +287,13 @@ c                   available.
           ENDIF
       ELSE
           NOTDEW = .FALSE.
+      ENDIF
+
+!     Set NOPAR to true if PAR is missing.
+      IF (PAR <= -90.)  THEN 
+          NOPAR = .TRUE.
+      ELSE
+          NOPAR = .FALSE.
       ENDIF
 
 C     Calculate hourly weather data.
@@ -422,7 +429,14 @@ c                   available.
       ELSE
           NOTDEW = .FALSE.
       ENDIF      
-      
+
+!     Set NOPAR to true if PAR is missing.
+      IF (PAR <= -90.)  THEN 
+          NOPAR = .TRUE.
+      ELSE
+          NOPAR = .FALSE.
+      ENDIF
+
 C     Calculate hourly weather data.
       CALL HMET(
      &    CLOUDS, DAYL, DEC, ISINB, PAR, REFHT,           !Input
@@ -497,6 +511,7 @@ C-----------------------------------------------------------------------
       WEATHER % DAYL   = DAYL
       WEATHER % NOTDEW = NOTDEW
       WEATHER % NOWIND = NOWIND
+      WEATHER % NOPAR  = NOPAR
       WEATHER % OZON7  = OZON7  
       WEATHER % PAR    = PAR   
       WEATHER % RAIN   = RAIN  
@@ -564,6 +579,7 @@ C-----------------------------------------------------------------------
 ! NEV        Number of environmental modification records 
 ! NOTDEW     No TDEW read from weather file
 ! NOWIND     No WIND read from weather file
+! NOPAR      No PAR read from weather file
 ! RUN        Report number for sequenced or multi-season runs 
 ! PAR        Daily photosynthetically active radiation or photon flux 
 !              density (moles[quanta]/m2-d)
@@ -581,19 +597,19 @@ C-----------------------------------------------------------------------
 ! SNDN       Time of sunset (hr)
 ! SNUP       Time of sunrise (hr)
 ! SRAD       Solar radiation (MJ/m2-d)
-! TAIRHR(TS) Hourly air temperature (in some routines called TGRO) (°C)
+! TAIRHR(TS) Hourly air temperature (in some routines called TGRO) (ï¿½C)
 ! TAMP       Amplitude of temperature function used to calculate soil 
-!              temperatures (°C)
+!              temperatures (ï¿½C)
 ! TAV        Average annual soil temperature, used with TAMP to calculate 
-!              soil temperature. (°C)
-! TAVG       Average daily temperature (°C)
-! TDAY       Average temperature during daylight hours (°C)
-! TDEW       Dewpoint temperature (°C)
-! TGRO(I)    Hourly air temperature (°C)
-! TGROAV     Average daily canopy temperature (°C)
-! TGRODY     Average temperature during daylight hours (°C)
-! TMAX       Maximum daily temperature (°C)
-! TMIN       Minimum daily temperature (°C)
+!              soil temperature. (ï¿½C)
+! TAVG       Average daily temperature (ï¿½C)
+! TDAY       Average temperature during daylight hours (ï¿½C)
+! TDEW       Dewpoint temperature (ï¿½C)
+! TGRO(I)    Hourly air temperature (ï¿½C)
+! TGROAV     Average daily canopy temperature (ï¿½C)
+! TGRODY     Average temperature during daylight hours (ï¿½C)
+! TMAX       Maximum daily temperature (ï¿½C)
+! TMIN       Minimum daily temperature (ï¿½C)
 ! TS         Number of intermediate time steps per day (usually 24)
 !                    set = 240 on 9JAN17 by Bruce Kimball      
 ! WINDHR(TS) Hourly wind speed (m/s)
